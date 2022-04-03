@@ -20,7 +20,7 @@ mongoose.connection.once("open", () => {
 
 
 
-//ROUTES
+// ROUTES
 
 // Create a note
 recipeApp.post("/create", (req, res) => {
@@ -81,7 +81,6 @@ recipeApp.post("/update", (req, res) => {
     res.send("Updated!")
 })
 
-
 // Fetch all notes
 recipeApp.get("/fetch", (req, res) => {
 
@@ -92,7 +91,7 @@ recipeApp.get("/fetch", (req, res) => {
 })
 
 
-// http://192.168.1.102:8081/create
+// Start server @ http://192.168.1.102:8081/create
 var server = recipeApp.listen(8081, "192.168.1.102", () => {
     console.log("Server is running!");
 })
