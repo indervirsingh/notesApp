@@ -2,6 +2,9 @@
 const express = require('express')
 const mongoose = require('mongoose')
 
+//Create schema object for server to use, via mongoose 
+const Data = require('./noteSchema.js')
+
 //Create a server-object/instance for the app
 var recipeApp = express()
 
