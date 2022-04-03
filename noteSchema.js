@@ -9,7 +9,7 @@ var note = new Schema({
     ingredients: String,
     recipe: String,
     summary: String,
-    
+
 })
 
 const Data = mongoose.model("data", note)
