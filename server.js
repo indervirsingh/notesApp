@@ -13,9 +13,11 @@ mongoose.connect('mongodb://localhost/userStorageDB')
 
 // Feedback handling for mongoose
 mongoose.connection.once("open", () => {
-    console.log("connected to database")
-}).on("error", (error) => {
-    console.log("Failed to connect " + error)
+    try {
+        console.log("connected to database")
+    } catch (error) {
+        console.log("Failed to connect " + error)
+    }
 })
 
 
