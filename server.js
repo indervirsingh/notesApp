@@ -21,7 +21,6 @@ mongoose.connection.once("open", () => {
 })
 
 
-
 // ROUTES
 
 // Create a note
