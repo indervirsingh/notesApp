@@ -1,6 +1,7 @@
 // Import Express and Mongoose modules
 const express = require('express')
 const mongoose = require('mongoose')
+const rateLimit = require('express-rate-limit')
 
 //Create schema object for server to use, via mongoose 
 const Data = require('./noteSchema')
@@ -81,8 +82,15 @@ recipeApp.post("/update", (req, res) => {
     res.send("Updated!")
 })
 
+// Define rate limiter for the /fetch route
+const fetchLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: "Too many requests from this IP, please try again later."
+});
+
 // Fetch all notes
-recipeApp.get("/fetch", (req, res) => {
+recipeApp.get("/fetch", fetchLimiter, (req, res) => {
 
     // Searches through all of the notes/objects in database then sends them back
     Data.find({}).then((DBitems) => {
