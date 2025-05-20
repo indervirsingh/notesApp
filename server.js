@@ -61,8 +61,15 @@ recipeApp.post("/delete", (req, res) => {
     res.send("Deleted!")
 })
 
+// Define rate limiter for the /update route
+const updateLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: "Too many update requests from this IP, please try again later."
+});
+
 // Update a note
-recipeApp.post("/update", (req, res) => {
+recipeApp.post("/update", updateLimiter, (req, res) => {
 
     // (_id, updated Note information, error Message)
     Data.findByIdAndUpdate({
