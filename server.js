@@ -49,8 +49,15 @@ recipeApp.post("/create", (req, res) => {
 
 })
 
+// Define rate limiter for the /delete route
+const deleteLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: "Too many delete requests from this IP, please try again later."
+});
+
 // Delete a note
-recipeApp.post("/delete", (req, res) => {
+recipeApp.post("/delete", deleteLimiter, (req, res) => {
 
     // Use database object which is connected to mongodb via mongoose to search database and delete the one requested by user
     Data.findOneAndRemove({
