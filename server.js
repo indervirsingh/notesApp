@@ -1,6 +1,7 @@
 // Import Express and Mongoose modules
 const express = require('express')
 const mongoose = require('mongoose')
+const rateLimit = require('express-rate-limit')
 
 //Create schema object for server to use, via mongoose 
 const Data = require('./noteSchema')
@@ -48,8 +49,15 @@ recipeApp.post("/create", (req, res) => {
 
 })
 
+// Define rate limiter for the /delete route
+const deleteLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: "Too many delete requests from this IP, please try again later."
+});
+
 // Delete a note
-recipeApp.post("/delete", (req, res) => {
+recipeApp.post("/delete", deleteLimiter, (req, res) => {
 
     // Use database object which is connected to mongodb via mongoose to search database and delete the one requested by user
     Data.findOneAndRemove({
@@ -60,8 +68,15 @@ recipeApp.post("/delete", (req, res) => {
     res.send("Deleted!")
 })
 
+// Define rate limiter for the /update route
+const updateLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: "Too many update requests from this IP, please try again later."
+});
+
 // Update a note
-recipeApp.post("/update", (req, res) => {
+recipeApp.post("/update", updateLimiter, (req, res) => {
 
     // (_id, updated Note information, error Message)
     Data.findByIdAndUpdate({
@@ -81,8 +96,15 @@ recipeApp.post("/update", (req, res) => {
     res.send("Updated!")
 })
 
+// Define rate limiter for the /fetch route
+const fetchLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: "Too many requests from this IP, please try again later."
+});
+
 // Fetch all notes
-recipeApp.get("/fetch", (req, res) => {
+recipeApp.get("/fetch", fetchLimiter, (req, res) => {
 
     // Searches through all of the notes/objects in database then sends them back
     Data.find({}).then((DBitems) => {
