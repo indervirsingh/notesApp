@@ -19,6 +19,6 @@
   "homepage": "https://github.com/indervirsingh/notesApp#readme",
   "dependencies": {
     "express": "^5.1.0",
-    "mongoose": "^8.16.1"
+    "mongoose": "^8.16.2"
   }
 }
